@@ -93,12 +93,13 @@ const updateTimer = (timer, deadline, intervalId) => {
   timer.innerHTML = '';
   timer.append(timerTitle, timerDays, timerHours, timerMinutes);
 
-  timer.style.padding = '16px';
+  timer.style.padding = '32px';
+  timer.style.borderRadius = '16px';
 
   if (days >= 1) {
-    timer.style.backgroundColor = 'maroon';
-  } else {
     timer.style.backgroundColor = 'forestgreen';
+  } else {
+    timer.style.backgroundColor = 'maroon';
   }
 };
 

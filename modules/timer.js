@@ -96,6 +96,8 @@ const updateTimer = (timer, deadline, intervalId) => {
   timer.style.padding = '32px';
   timer.style.borderRadius = '16px';
 
+  // Поменял логику цветов
+  // Много времени до конца - зелёный, мало - красный
   if (days >= 1) {
     timer.style.backgroundColor = 'forestgreen';
   } else {

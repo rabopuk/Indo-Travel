@@ -1,8 +1,11 @@
 /* eslint-disable object-curly-spacing */
-// import { initTimer } from './modules/timer.js';
+import { initTimer } from './modules/timer.js';
 
 // const init = () => {
-//   initTimer();
 // };
 
 // document.addEventListener('DOMContentLoaded', init);
+
+(() => {
+  document.addEventListener('DOMContentLoaded', initTimer);
+})();

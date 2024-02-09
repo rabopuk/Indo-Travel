@@ -102,7 +102,7 @@ const updateTimer = (timer, deadline, intervalId) => {
   }
 };
 
-const initTimer = () => {
+export const initTimer = () => {
   const timer = document.querySelector('.timer');
   const deadline = new Date(timer.dataset.timerDeadline);
   // Меняю время на GMT+3
@@ -114,7 +114,3 @@ const initTimer = () => {
 
   updateTimer(timer, deadline, intervalId);
 };
-
-(() => {
-  document.addEventListener('DOMContentLoaded', initTimer);
-})();

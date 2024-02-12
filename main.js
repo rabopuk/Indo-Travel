@@ -1,5 +1,7 @@
 /* eslint-disable object-curly-spacing */
 import './modules/accordion.js';
+import './modules/listeners.js';
+
 import { initTimer } from './modules/timer.js';
 
 // const init = () => {

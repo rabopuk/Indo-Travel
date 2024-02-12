@@ -1,23 +1,11 @@
 /* eslint-disable object-curly-spacing */
-// import {
-//   DAYS_VARS,
-//   HOURS_VARS,
-//   MINUTES_VARS,
-//   MS_PER_DAY,
-//   MS_PER_HOUR,
-//   MS_PER_MINUTE,
-// } from './constants.js';
-// import { createTimerElement, createTimerTitle } from './createElements.js';
-// import { declension } from './utils.js';
-
-// !  Вначале делал timer, разбивая по логике на модули
-// !  Потом при перепрочтении задания понял, что раз должно получиться что-то
-// ! вроде плагина, следует всё собрать в один модуль
 
 const DAYS_VARS = ['день', 'дня', 'дней'];
 const HOURS_VARS = ['час', 'часа', 'часов'];
 const MINUTES_VARS = ['минута', 'минуты', 'минут'];
+const SECONDS_VARS = ['секунда', 'секунды', 'секунд'];
 
+const MS_PER_SECOND = 1000;
 const MS_PER_MINUTE = 1000 * 60;
 const MS_PER_HOUR = MS_PER_MINUTE * 60;
 const MS_PER_DAY = MS_PER_HOUR * 24;
@@ -80,24 +68,30 @@ const updateTimer = (timer, deadline, intervalId) => {
   const days = Math.floor(remainingTime / MS_PER_DAY);
   const hours = Math.floor((remainingTime % MS_PER_DAY) / MS_PER_HOUR);
   const minutes = Math.floor((remainingTime % MS_PER_HOUR) / MS_PER_MINUTE);
+  const seconds = Math.floor((remainingTime % MS_PER_MINUTE) / MS_PER_SECOND);
 
   const timerTitle =
     createTimerTitle('До конца акции осталось:');
-  const timerDays =
-    createTimerElement(days, declension(days, DAYS_VARS), 'days');
+  const timerDays = days >= 1 ?
+    createTimerElement(days, declension(days, DAYS_VARS), 'days') :
+    null;
   const timerHours =
     createTimerElement(hours, declension(hours, HOURS_VARS), 'hours');
   const timerMinutes =
     createTimerElement(minutes, declension(minutes, MINUTES_VARS), 'minutes');
+  const timerSeconds = days < 1 ?
+    createTimerElement(seconds, declension(seconds, SECONDS_VARS), 'seconds') :
+    null;
 
   timer.innerHTML = '';
-  timer.append(timerTitle, timerDays, timerHours, timerMinutes);
+  timer.append(timerTitle);
+  if (timerDays) timer.append(timerDays);
+  timer.append(timerHours, timerMinutes);
+  if (timerSeconds) timer.append(timerSeconds);
 
   timer.style.padding = '32px';
   timer.style.borderRadius = '16px';
 
-  // Поменял логику цветов
-  // Много времени до конца - зелёный, мало - красный
   if (days >= 1) {
     timer.style.backgroundColor = 'forestgreen';
   } else {
@@ -108,12 +102,12 @@ const updateTimer = (timer, deadline, intervalId) => {
 export const initTimer = () => {
   const timer = document.querySelector('.timer');
   const deadline = new Date(timer.dataset.timerDeadline);
+
   // Меняю время на GMT+3
   deadline.setUTCHours(deadline.getUTCHours() + 3);
 
-  // ! Вызываю раз в минуту, а то слишком часто обновлять каждую секунду
   const intervalId =
-    setInterval(() => updateTimer(timer, deadline, intervalId), 60 * 1000);
+    setInterval(() => updateTimer(timer, deadline, intervalId), 1000);
 
   updateTimer(timer, deadline, intervalId);
 };

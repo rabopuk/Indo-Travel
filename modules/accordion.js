@@ -35,3 +35,10 @@ accordion.addEventListener('click', ({ target }) => {
     }
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (itemsTravel.length > 0) {
+    itemsTravel[0].classList.add('travel__item_active');
+    textWrappersTravel[0].style.height = `${heightWrapperTravel}px`;
+  }
+});

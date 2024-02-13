@@ -1,4 +1,9 @@
 /* eslint-disable object-curly-spacing */
+import {
+  ANIMATION_DURATION,
+  animateMenu,
+  startAnimation,
+} from './animateMenu.js';
 import { getDOMElements } from './getDOMElements.js';
 
 const {
@@ -9,6 +14,7 @@ const {
 menuButton.addEventListener('click', e => {
   e.stopPropagation();
   menu.classList.toggle('header__menu_active');
+  startAnimation(ANIMATION_DURATION, animateMenu);
 });
 
 document.addEventListener('click', ({ target }) => {

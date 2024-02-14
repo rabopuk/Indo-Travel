@@ -1,6 +1,13 @@
+/* eslint-disable max-len */
 /* eslint-disable object-curly-spacing */
 import { getDOMElements } from './getDOMElements.js';
-import { createOption, populateData } from './populateDateData.js';
+import {
+  createOption,
+  populateData,
+  updateButtonState,
+  updateCountSelect,
+} from './populateDateData.js';
+import { CONSTANTS, getPersonDeclension } from './utils.js';
 
 let priceWrapper;
 let priceDiv;
@@ -34,45 +41,27 @@ const initTourSection = async () => {
 
   const { dateSelectTour, peopleSelectTour, tourButton } = getDOMElements();
 
-  dateSelectTour.append(createOption('', 'Выбрать дату'));
-  peopleSelectTour.append(createOption('', 'Количество человек'));
+  dateSelectTour.append(createOption('', CONSTANTS[0]));
+  peopleSelectTour.append(createOption('', CONSTANTS[1]));
 
   dateData.forEach(item => {
     dateSelectTour.append(createOption(item.date, item.date));
   });
 
-  const updatePeopleSelect = () => {
-    const selectedDate = dateSelectTour.value;
-    const { 'min-people': minPeople, 'max-people': maxPeople } =
-      dateData.find(item => item.date === selectedDate) || {};
+  const tourElements = [dateSelectTour, peopleSelectTour];
 
-    peopleSelectTour.innerHTML = '';
-    peopleSelectTour.append(createOption('', 'Количество человек'));
-
-    if (minPeople && maxPeople) {
-      for (let i = minPeople; i <= maxPeople; i++) {
-        peopleSelectTour.append(createOption(i, i));
-      }
-    }
-  };
-
-  const updateButtonState = () => {
-    const inputs = [dateSelectTour, peopleSelectTour];
-
-    tourButton.disabled = inputs.some(input => input.value === '');
-  };
-
-  updateButtonState();
+  updateCountSelect(dateSelectTour, peopleSelectTour, dateData);
+  updateButtonState(tourElements, tourButton);
 
   dateSelectTour.addEventListener('change', () => {
     removePriceWrapper();
-    updatePeopleSelect();
-    updateButtonState();
+    updateCountSelect(dateSelectTour, peopleSelectTour, dateData);
+    updateButtonState(tourElements, tourButton);
   });
 
   peopleSelectTour.addEventListener('change', () => {
     removePriceWrapper();
-    updateButtonState();
+    updateButtonState(tourElements, tourButton);
   });
 
   tourButton.addEventListener('click', e => {
@@ -82,14 +71,16 @@ const initTourSection = async () => {
     const selectedItem = dateData.find(item => item.date === selectedDate);
     const selectedPeople = peopleSelectTour.value;
 
-    if (selectedItem && selectedPeople !== 'Количество человек') {
+    if (selectedItem && selectedPeople !== CONSTANTS[1]) {
       const price = selectedItem.price * selectedPeople;
 
       if (!priceWrapper) {
         createPriceWrapper();
       }
 
-      priceDiv.textContent = `Цена за ${selectedPeople}: ${price}`;
+      priceDiv.textContent = `
+        Цена за ${selectedPeople} ${getPersonDeclension(selectedPeople)}: ${price}
+      `;
     }
   });
 };

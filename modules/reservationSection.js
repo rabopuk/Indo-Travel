@@ -1,19 +1,12 @@
 /* eslint-disable object-curly-spacing */
 import { getDOMElements } from './getDOMElements.js';
-import { createOption, populateData } from './populateDateData.js';
-
-const PERSON_DECLENSIONS = ['человек', 'человека', 'человек'];
-
-const getPersonDeclension = num => {
-  num = Math.abs(num) % 100;
-  const num1 = num % 10;
-
-  if (num > 10 && num < 20) return PERSON_DECLENSIONS[2];
-  if (num1 > 1 && num1 < 5) return PERSON_DECLENSIONS[1];
-  if (num1 === 1) return PERSON_DECLENSIONS[0];
-
-  return PERSON_DECLENSIONS[2];
-};
+import {
+  createOption,
+  populateData,
+  updateButtonState,
+  updateCountSelect,
+} from './populateDateData.js';
+import { CONSTANTS, getPersonDeclension } from './utils.js';
 
 const initReservationSection = async () => {
   const dateData = await populateData();
@@ -28,38 +21,12 @@ const initReservationSection = async () => {
     reservationPhone,
   } = getDOMElements();
 
-  dateSelectReservation.append(createOption('', 'Дата путешествия'));
-  peopleSelectReservation.append(createOption('', 'Количество человек'));
+  dateSelectReservation.append(createOption('', CONSTANTS[2]));
+  peopleSelectReservation.append(createOption('', CONSTANTS[1]));
 
   dateData.forEach(item => {
     dateSelectReservation.append(createOption(item.date, item.date));
   });
-
-  const updatePeopleSelect = () => {
-    const selectedDate = dateSelectReservation.value;
-    const { 'min-people': minPeople, 'max-people': maxPeople } =
-      dateData.find(item => item.date === selectedDate) || {};
-
-    peopleSelectReservation.innerHTML = '';
-    peopleSelectReservation.append(createOption('', 'Количество человек'));
-
-    if (minPeople && maxPeople) {
-      for (let i = minPeople; i <= maxPeople; i++) {
-        peopleSelectReservation.append(createOption(i, i));
-      }
-    }
-  };
-
-  const updateButtonState = () => {
-    const inputs = [
-      dateSelectReservation,
-      peopleSelectReservation,
-      reservationName,
-      reservationPhone,
-    ];
-
-    reservationButton.disabled = inputs.some(input => input.value === '');
-  };
 
   const updateReservationInfo = () => {
     const selectedDate = dateSelectReservation.value;
@@ -70,16 +37,15 @@ const initReservationSection = async () => {
     let priceContent = '';
 
     if (selectedItem) {
-      textContent = `${selectedDate}`;
+      textContent = `${selectedDate} `;
     }
 
-    if (selectedPeople !== '' && (selectedPeople !== 'Количество человек')) {
-      textContent +=
-        ` ${selectedPeople} ${getPersonDeclension(selectedPeople)}`;
+    if (selectedPeople !== '' && selectedPeople !== CONSTANTS[1]) {
+      textContent += `${selectedPeople} ${getPersonDeclension(selectedPeople)}`;
     }
 
-    if (selectedItem && (selectedPeople !== '') &&
-      (selectedPeople !== 'Количество человек')) {
+    if (selectedItem && selectedPeople !== '' &&
+      selectedPeople !== CONSTANTS[1]) {
       priceContent = `${selectedItem.price * selectedPeople}₽`;
     }
 
@@ -87,21 +53,33 @@ const initReservationSection = async () => {
     reservationPrice.textContent = priceContent;
   };
 
-  updateButtonState();
+  const reservationElements = [
+    dateSelectReservation,
+    peopleSelectReservation,
+    reservationName,
+    reservationPhone,
+  ];
+
+  updateButtonState(reservationElements, reservationButton);
 
   dateSelectReservation.addEventListener('change', () => {
-    updatePeopleSelect();
-    updateButtonState();
+    updateCountSelect(dateSelectReservation, peopleSelectReservation, dateData);
+    updateButtonState(reservationElements, reservationButton);
     updateReservationInfo();
   });
 
   peopleSelectReservation.addEventListener('change', () => {
-    updateButtonState();
+    updateButtonState(reservationElements, reservationButton);
     updateReservationInfo();
   });
 
-  reservationName.addEventListener('input', updateButtonState);
-  reservationPhone.addEventListener('input', updateButtonState);
+  reservationName.addEventListener('input', () => {
+    updateButtonState(reservationElements, reservationButton);
+  });
+
+  reservationPhone.addEventListener('input', () => {
+    updateButtonState(reservationElements, reservationButton);
+  });
 };
 
 initReservationSection();

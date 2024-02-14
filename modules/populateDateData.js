@@ -17,3 +17,22 @@ export const populateData = async () => {
     console.error('Error fetching data: ', error);
   }
 };
+
+export const updateCountSelect = (dateSelect, peopleSelect, dateData) => {
+  const selectedDate = dateSelect.value;
+  const { 'min-people': minPeople, 'max-people': maxPeople } =
+    dateData.find(item => item.date === selectedDate) || {};
+
+  peopleSelect.innerHTML = '';
+  peopleSelect.append(createOption('', 'Количество человек'));
+
+  if (minPeople && maxPeople) {
+    for (let i = minPeople; i <= maxPeople; i++) {
+      peopleSelect.append(createOption(i, i));
+    }
+  }
+};
+
+export const updateButtonState = (inputs, button) => {
+  button.disabled = inputs.some(input => input.value === '');
+};

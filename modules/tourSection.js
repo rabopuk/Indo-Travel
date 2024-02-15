@@ -1,5 +1,3 @@
-// /* eslint-disable max-len */
-// /* eslint-disable object-curly-spacing */
 // import { domElements } from './getDOMElements.js';
 // import {
 //   createOption,
@@ -8,8 +6,6 @@
 //   updateCountSelect,
 // } from './populateDateData.js';
 // import { CONSTANTS } from './utils.js';
-
-
 
 // export const initTourSection = async () => {
 //   const dateData = await populateData();

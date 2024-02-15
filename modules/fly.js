@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-spacing */
 import { debounceTimer } from './debounceTimer.js';
 
 const doc = document.documentElement;
@@ -54,16 +53,11 @@ const calcFlyPosition = () => {
   }
 };
 
-const debouncedCalcFlyPosition = debounceTimer(calcFlyPosition, DEBOUNCE_DELAY);
+export const debouncedCalcFlyPosition =
+  debounceTimer(calcFlyPosition, DEBOUNCE_DELAY);
 
-window.addEventListener('scroll', () => {
-  requestAnimationFrame(debouncedCalcFlyPosition);
-});
-
-const handleResize = () => {
+export const handleResize = () => {
   fly.style.display = window.innerWidth < MIN_WINDOW_WIDTH ? 'none' : 'block';
 };
-
-window.addEventListener('resize', handleResize);
 
 handleResize();

@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable object-curly-spacing */
 import { fetchData } from './fetch.js';
 
 export const createOption = (value, text) => {
@@ -32,5 +30,3 @@ export const updateCountSelect = (dateSelect, peopleSelect, dateData) => {
     }
   }
 };
-
-

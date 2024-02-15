@@ -1,11 +1,7 @@
-/* eslint-disable max-len */
-/* eslint-disable object-curly-spacing */
 import { domElements } from './getDOMElements.js';
 
-const { menu } = domElements;
-
 export const ANIMATION_DURATION = 500;
-
+const { menu } = domElements;
 let requestId = NaN;
 
 const easeInOutCubic = timeFraction => (

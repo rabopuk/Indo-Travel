@@ -1,5 +1,3 @@
-/* eslint-disable object-curly-spacing */
-
 const DAYS_VARS = ['день', 'дня', 'дней'];
 const HOURS_VARS = ['час', 'часа', 'часов'];
 const MINUTES_VARS = ['минута', 'минуты', 'минут'];

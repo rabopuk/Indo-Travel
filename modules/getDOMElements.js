@@ -1,10 +1,10 @@
-/* eslint-disable max-len */
 const getDOMElements = () => {
   const timer = document.querySelector('.timer');
 
   const accordion = document.querySelector('.travel__accordion');
   const itemsTravel = document.querySelectorAll('.travel__item');
-  const textWrappersTravel = document.querySelectorAll('.travel__item-text-wrapper');
+  const textWrappersTravel =
+    document.querySelectorAll('.travel__item-text-wrapper');
 
   const menuButton = document.querySelector('.header__menu-button');
   const menu = document.querySelector('.header__menu');
@@ -15,7 +15,8 @@ const getDOMElements = () => {
   const tourForm = document.querySelector('.tour__form');
 
   const dateSelectReservation = document.getElementById('reservation__date');
-  const peopleSelectReservation = document.getElementById('reservation__people');
+  const peopleSelectReservation =
+    document.getElementById('reservation__people');
   const reservationButton = document.querySelector('.reservation__button');
   const reservationForm = document.querySelector('.reservation__form');
   const reservationData = document.querySelector('.reservation__data');

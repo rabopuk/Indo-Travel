@@ -1,9 +1,10 @@
-/* eslint-disable max-len */
+import { heightWrapperTravel } from './accordion.js';
 import {
   ANIMATION_DURATION,
   animateMenu,
   startAnimation,
 } from './animateMenu.js';
+import { debouncedCalcFlyPosition, handleResize } from './fly.js';
 import { domElements } from './getDOMElements.js';
 import {
   createPriceWrapper,
@@ -22,6 +23,42 @@ import {
   updateButtonState,
 } from './utils.js';
 
+const handleDocumentLoad100ms = () => {
+  const { itemsTravel, textWrappersTravel } = domElements;
+
+  setTimeout(() => {
+    if (itemsTravel.length > 0) {
+      itemsTravel[0].classList.add('travel__item_active');
+      textWrappersTravel[0].style.height = `${heightWrapperTravel}px`;
+    }
+  }, 200);
+};
+
+const handleAccordionClick = ({ target }) => {
+  const {
+    accordion,
+    itemsTravel,
+    textWrappersTravel,
+  } = domElements;
+
+  const btn = target;
+
+  if (btn.classList.contains('travel__item-title')) {
+    const index = [...accordion.children].indexOf(btn.parentNode);
+
+    for (let i = 0; i < itemsTravel.length; i++) {
+      if (index === i) {
+        textWrappersTravel[i].style.height =
+          itemsTravel[i].classList.contains('travel__item_active') ?
+            '' : `${heightWrapperTravel}px`;
+        itemsTravel[i].classList.toggle('travel__item_active');
+      } else {
+        itemsTravel[i].classList.remove('travel__item_active');
+        textWrappersTravel[i].style.height = '';
+      }
+    }
+  }
+};
 
 const handleDateSelectChangeTour = (
   dateSelect,
@@ -115,6 +152,7 @@ const handleMenuClick = ({ target }) => {
 export const initEventListeners = async () => {
   const dateData = await populateData();
   const {
+    accordion,
     dateSelectTour,
     peopleSelectTour,
     tourButton,
@@ -135,6 +173,16 @@ export const initEventListeners = async () => {
     reservationName,
     reservationPhone,
   ];
+
+  window.addEventListener('resize', handleResize);
+
+  window.addEventListener('scroll', () => {
+    requestAnimationFrame(debouncedCalcFlyPosition);
+  });
+
+  handleDocumentLoad100ms();
+
+  accordion.addEventListener('click', handleAccordionClick);
 
   dateSelectTour.addEventListener('change', () =>
     handleDateSelectChangeTour(

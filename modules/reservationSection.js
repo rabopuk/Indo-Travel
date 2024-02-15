@@ -1,4 +1,4 @@
-// /* eslint-disable object-curly-spacing */
+/* eslint-disable max-len */
 // import { domElements } from './getDOMElements.js';
 // import {
 //   createOption,

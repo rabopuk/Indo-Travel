@@ -1,4 +1,4 @@
-import { fetchData } from './fetch.js';
+import { fetchData } from './APIUtils.js';
 
 export const createOption = (value, text) => {
   const option = document.createElement('option');
@@ -7,9 +7,9 @@ export const createOption = (value, text) => {
   return option;
 };
 
-export const populateData = async () => {
+export const populateData = async (url) => {
   try {
-    const dateData = await fetchData('date.json');
+    const dateData = await fetchData(url);
     return dateData;
   } catch (error) {
     console.error('Error fetching data: ', error);

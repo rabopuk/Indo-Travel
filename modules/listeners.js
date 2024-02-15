@@ -1,3 +1,4 @@
+import { LOCAL_URL, URL } from './APIUtils.js';
 import { heightWrapperTravel } from './accordion.js';
 import {
   ANIMATION_DURATION,
@@ -5,6 +6,7 @@ import {
   startAnimation,
 } from './animateMenu.js';
 import { debouncedCalcFlyPosition, handleResize } from './fly.js';
+import { submitFooterForm, submitReservationForm } from './formSubmission.js';
 import { domElements } from './getDOMElements.js';
 import {
   createPriceWrapper,
@@ -41,10 +43,8 @@ const handleAccordionClick = ({ target }) => {
     textWrappersTravel,
   } = domElements;
 
-  const btn = target;
-
-  if (btn.classList.contains('travel__item-title')) {
-    const index = [...accordion.children].indexOf(btn.parentNode);
+  if (target.classList.contains('travel__item-title')) {
+    const index = [...accordion.children].indexOf(target.parentNode);
 
     for (let i = 0; i < itemsTravel.length; i++) {
       if (index === i) {
@@ -149,8 +149,24 @@ const handleMenuClick = ({ target }) => {
   }
 };
 
+const handleModalClicks = ({ target }) => {
+  const modal = document.querySelector('.modal');
+  const overlay = document.querySelector('.overlay');
+  const modalButton = document.querySelector('.modal__button');
+  const modalImg = document.querySelector('.modal__img');
+
+  if (target === overlay || target === modalImg) {
+    modal.remove();
+    overlay.remove();
+  } else if (target === modalButton) {
+    modal.remove();
+    overlay.remove();
+    window.location.href = '#reservation';
+  }
+};
+
 export const initEventListeners = async () => {
-  const dateData = await populateData();
+  const dateData = await populateData(LOCAL_URL);
   const {
     accordion,
     dateSelectTour,
@@ -165,6 +181,8 @@ export const initEventListeners = async () => {
     reservationPhone,
     menuButton,
     menu,
+    reservationForm,
+    footerForm,
   } = domElements;
   const tourElements = [dateSelectTour, peopleSelectTour];
   const reservationElements = [
@@ -234,4 +252,16 @@ export const initEventListeners = async () => {
   document.addEventListener('click', handleDocumentClick);
 
   menu.addEventListener('click', handleMenuClick);
+
+  reservationForm.addEventListener('submit', e => {
+    e.preventDefault();
+    submitReservationForm(URL);
+  });
+
+  footerForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    submitFooterForm(URL);
+  });
+
+  document.body.addEventListener('click', handleModalClicks);
 };

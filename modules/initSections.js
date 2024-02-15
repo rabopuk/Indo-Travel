@@ -1,3 +1,4 @@
+import { LOCAL_URL } from './APIUtils.js';
 import { domElements } from './getDOMElements.js';
 import { createOption, populateData } from './populateDateData.js';
 import { CONSTANTS, getPersonDeclension, updateButtonState } from './utils.js';
@@ -8,7 +9,7 @@ export let priceDiv;
 const initSection = async (
   dateSelect, peopleSelect, button, additionalElements = [], updateInfo,
 ) => {
-  const dateData = await populateData();
+  const dateData = await populateData(LOCAL_URL);
 
   dateSelect.append(createOption('', CONSTANTS[0]));
   peopleSelect.append(createOption('', CONSTANTS[1]));

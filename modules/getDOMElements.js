@@ -24,6 +24,11 @@ const getDOMElements = () => {
   const reservationName = document.getElementById('reservation__name');
   const reservationPhone = document.getElementById('reservation__phone');
 
+  const footerForm = document.querySelector('.footer__form');
+  const footerInput = document.querySelector('.footer__input');
+  const footerButton = document.querySelector('.footer__button');
+  const footerInputWrap = document.querySelector('.footer__input-wrap');
+
   return {
     timer,
     accordion,
@@ -43,6 +48,10 @@ const getDOMElements = () => {
     reservationPrice,
     reservationName,
     reservationPhone,
+    footerForm,
+    footerInput,
+    footerButton,
+    footerInputWrap,
   };
 };
 

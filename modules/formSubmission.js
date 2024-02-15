@@ -19,7 +19,13 @@ const replaceInputWithMessage = (input, button, inputWrap, messageElement) => {
 };
 
 export const submitReservationForm = async url => {
-  const { reservationForm, reservationName, reservationPhone } = domElements;
+  const {
+    reservationForm,
+    reservationName,
+    reservationPhone,
+    reservationData,
+    reservationPrice,
+  } = domElements;
 
   const formData = new FormData(reservationForm);
   const data = Object.fromEntries(formData);
@@ -31,6 +37,8 @@ export const submitReservationForm = async url => {
     const result = await postData(url, data);
     showModal(MESSAGES[0], MESSAGES[1], true);
     reservationForm.reset();
+    reservationData.textContent = '';
+    reservationPrice.textContent = '';
     console.log(result);
   } catch (error) {
     showModal(MESSAGES[2], MESSAGES[3], false);

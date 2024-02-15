@@ -16,3 +16,7 @@ export const getPersonDeclension = num => {
 
   return PERSON_DECLENSIONS[0];
 };
+
+export const updateButtonState = (inputs, button) => {
+  button.disabled = inputs.some(input => input.value === '');
+};

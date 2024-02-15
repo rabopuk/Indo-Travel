@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 /* eslint-disable object-curly-spacing */
-import { getDOMElements } from './getDOMElements.js';
+import { domElements } from './getDOMElements.js';
 
-const { menu } = getDOMElements();
+const { menu } = domElements;
 
 export const ANIMATION_DURATION = 500;
 

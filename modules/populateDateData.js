@@ -33,6 +33,4 @@ export const updateCountSelect = (dateSelect, peopleSelect, dateData) => {
   }
 };
 
-export const updateButtonState = (inputs, button) => {
-  button.disabled = inputs.some(input => input.value === '');
-};
+

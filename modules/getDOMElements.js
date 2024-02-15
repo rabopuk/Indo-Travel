@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-export const getDOMElements = () => {
+const getDOMElements = () => {
   const timer = document.querySelector('.timer');
 
   const accordion = document.querySelector('.travel__accordion');
@@ -44,3 +44,5 @@ export const getDOMElements = () => {
     reservationPhone,
   };
 };
+
+export const domElements = getDOMElements();

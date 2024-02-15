@@ -1,85 +1,65 @@
-/* eslint-disable object-curly-spacing */
-import { getDOMElements } from './getDOMElements.js';
-import {
-  createOption,
-  populateData,
-  updateButtonState,
-  updateCountSelect,
-} from './populateDateData.js';
-import { CONSTANTS, getPersonDeclension } from './utils.js';
+// /* eslint-disable object-curly-spacing */
+// import { domElements } from './getDOMElements.js';
+// import {
+//   createOption,
+//   populateData,
+//   updateButtonState,
+// } from './populateDateData.js';
+// import { CONSTANTS, getPersonDeclension } from './utils.js';
 
-const initReservationSection = async () => {
-  const dateData = await populateData();
+// export const updateReservationInfo = (dateSelectReservation, peopleSelectReservation, dateData, reservationData, reservationPrice) => {
+//   const selectedDate = dateSelectReservation.value;
+//   const selectedItem = dateData.find(item => item.date === selectedDate);
+//   const selectedPeople = peopleSelectReservation.value;
 
-  const {
-    dateSelectReservation,
-    peopleSelectReservation,
-    reservationButton,
-    reservationData,
-    reservationPrice,
-    reservationName,
-    reservationPhone,
-  } = getDOMElements();
+//   let textContent = '';
+//   let priceContent = '';
 
-  dateSelectReservation.append(createOption('', CONSTANTS[2]));
-  peopleSelectReservation.append(createOption('', CONSTANTS[1]));
+//   if (selectedItem) {
+//     textContent = `${selectedDate} `;
+//   }
 
-  dateData.forEach(item => {
-    dateSelectReservation.append(createOption(item.date, item.date));
-  });
+//   if (selectedPeople !== '' && selectedPeople !== CONSTANTS[1]) {
+//     textContent += `${selectedPeople} ${getPersonDeclension(selectedPeople)}`;
+//   }
 
-  const updateReservationInfo = () => {
-    const selectedDate = dateSelectReservation.value;
-    const selectedItem = dateData.find(item => item.date === selectedDate);
-    const selectedPeople = peopleSelectReservation.value;
+//   if (selectedItem && selectedPeople !== '' &&
+//     selectedPeople !== CONSTANTS[1]) {
+//     priceContent = `${selectedItem.price * selectedPeople}₽`;
+//   }
 
-    let textContent = '';
-    let priceContent = '';
+//   reservationData.textContent = textContent;
+//   reservationPrice.textContent = priceContent;
+// };
 
-    if (selectedItem) {
-      textContent = `${selectedDate} `;
-    }
+// export const initReservationSection = async () => {
+//   const dateData = await populateData();
 
-    if (selectedPeople !== '' && selectedPeople !== CONSTANTS[1]) {
-      textContent += `${selectedPeople} ${getPersonDeclension(selectedPeople)}`;
-    }
+//   const {
+//     dateSelectReservation,
+//     peopleSelectReservation,
+//     reservationButton,
+//     reservationData,
+//     reservationPrice,
+//     reservationName,
+//     reservationPhone,
+//   } = domElements;
 
-    if (selectedItem && selectedPeople !== '' &&
-      selectedPeople !== CONSTANTS[1]) {
-      priceContent = `${selectedItem.price * selectedPeople}₽`;
-    }
+//   dateSelectReservation.append(createOption('', CONSTANTS[2]));
+//   peopleSelectReservation.append(createOption('', CONSTANTS[1]));
 
-    reservationData.textContent = textContent;
-    reservationPrice.textContent = priceContent;
-  };
+//   dateData.forEach(item => {
+//     dateSelectReservation.append(createOption(item.date, item.date));
+//   });
 
-  const reservationElements = [
-    dateSelectReservation,
-    peopleSelectReservation,
-    reservationName,
-    reservationPhone,
-  ];
+//   updateReservationInfo(dateSelectReservation, peopleSelectReservation, dateData, reservationData, reservationPrice);
 
-  updateButtonState(reservationElements, reservationButton);
+//   const reservationElements = [
+//     dateSelectReservation,
+//     peopleSelectReservation,
+//     reservationName,
+//     reservationPhone,
+//   ];
 
-  dateSelectReservation.addEventListener('change', () => {
-    updateCountSelect(dateSelectReservation, peopleSelectReservation, dateData);
-    updateButtonState(reservationElements, reservationButton);
-    updateReservationInfo();
-  });
-
-  peopleSelectReservation.addEventListener('change', () => {
-    updateButtonState(reservationElements, reservationButton);
-    updateReservationInfo();
-  });
-
-  reservationName.addEventListener('input', () => {
-    updateButtonState(reservationElements, reservationButton);
-  });
-
-  reservationPhone.addEventListener('input', () => {
-    updateButtonState(reservationElements, reservationButton);
-  });
-};
-
-initReservationSection();
+//   updateButtonState(reservationElements, reservationButton);
+// };

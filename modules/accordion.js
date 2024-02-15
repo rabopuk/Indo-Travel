@@ -1,12 +1,12 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable max-len */
-import { getDOMElements } from './getDOMElements.js';
+import { domElements } from './getDOMElements.js';
 
 const {
   accordion,
   itemsTravel,
   textWrappersTravel,
-} = getDOMElements();
+} = domElements;
 
 let heightWrapperTravel = 0;
 

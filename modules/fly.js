@@ -14,11 +14,12 @@ const createFlyElement = () => {
     z-index: 900;
   `;
   document.body.append(fly);
+
   return fly;
 };
 
 export const handleResize = (fly) => {
-  const MIN_WINDOW_WIDTH = 758;
+  const { MIN_WINDOW_WIDTH } = getConstants();
   fly.style.display = window.innerWidth < MIN_WINDOW_WIDTH ? 'none' : 'block';
 };
 
@@ -26,6 +27,8 @@ const initFly = () => {
   const { TRANSITION_DURATION } = getConstants();
   let lastScrollTop = 0;
   const fly = createFlyElement();
+
+  handleResize(fly);
 
   const setFlyTransform = (top, rotation) => {
     fly.style.transform = `translateY(${-top}px) rotate(${rotation})`;
@@ -62,7 +65,7 @@ const initFly = () => {
   const debouncedCalcFlyPosition =
     debounceTimer(calcFlyPosition, getConstants().DEBOUNCE_DELAY);
 
-  handleResize(fly);
+  window.addEventListener('resize', () => handleResize(fly));
 
   return debouncedCalcFlyPosition;
 };

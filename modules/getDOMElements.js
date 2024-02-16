@@ -14,6 +14,7 @@ const getDOMElements = () => {
   const tourButton = document.querySelector('.tour__button');
   const tourForm = document.querySelector('.tour__form');
 
+  const reservationSection = document.getElementById('reservation');
   const dateSelectReservation = document.getElementById('reservation__date');
   const peopleSelectReservation =
     document.getElementById('reservation__people');
@@ -40,6 +41,7 @@ const getDOMElements = () => {
     peopleSelectTour,
     tourButton,
     tourForm,
+    reservationSection,
     dateSelectReservation,
     peopleSelectReservation,
     reservationButton,

@@ -5,8 +5,12 @@ import {
   startAnimation,
 } from './animateMenu.js';
 import { getConstants } from './constants.js';
-import { debouncedCalcFlyPosition, handleResize } from './fly.js';
-import { submitFooterForm, submitReservationForm } from './formSubmission.js';
+import { debouncedCalcFlyPosition } from './fly.js';
+import {
+  formSubmitStatus,
+  submitFooterForm,
+  submitReservationForm,
+} from './formSubmission.js';
 import { domElements } from './getDOMElements.js';
 import {
   createPriceWrapper,
@@ -15,6 +19,7 @@ import {
   removePriceWrapper,
   updateReservationInfo,
 } from './initSections.js';
+import { showModal } from './modal.js';
 import {
   updateCountSelect,
 } from './populateDateData.js';
@@ -164,6 +169,70 @@ const handleMenuClick = ({ target }) => {
   }
 };
 
+const handleReservationButtonClick = async (e) => {
+  e.preventDefault();
+  const {
+    reservationPrice,
+    reservationName,
+    reservationPhone,
+    reservationForm,
+  } = domElements;
+  const formData = new FormData(reservationForm);
+  const data = Object.fromEntries(formData);
+
+  data.name = reservationName.value;
+  data.phone = reservationPhone.value;
+  data.price = reservationPrice.textContent.slice(0, -1);
+
+  showModal({
+    destination: data.destination,
+    people: data.people,
+    dates: data.dates,
+    price: data.price,
+  });
+};
+
+const handleBodyClick = e => {
+  const { target } = e;
+  const { reservationForm } = domElements;
+
+  if (target.classList.contains('modal__btn_confirm')) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const { reservationButton } = domElements;
+    const overlay = document.querySelector('.overlay');
+
+    overlay.remove();
+
+    submitReservationForm(getConstants().URL)
+      .then(() => {
+        if (!formSubmitStatus.getError()) {
+          [...reservationForm.elements].forEach(element => {
+            element.disabled = true;
+          });
+        } else {
+          reservationButton.disabled = true;
+        }
+      });
+  } else if (target.classList.contains('modal__btn_edit') ||
+    target.classList.contains('modal__btn_err')) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const { reservationSection } = domElements;
+    const overlay = document.querySelector('.overlay');
+
+    overlay.remove();
+    reservationSection.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+const handleFooterFormSubmit = (e) => {
+  e.preventDefault();
+  submitFooterForm(getConstants().URL);
+};
+
 const handleModalClicks = ({ target }) => {
   const modal = document.querySelector('.modal');
   const overlay = document.querySelector('.overlay');
@@ -179,6 +248,7 @@ const handleModalClicks = ({ target }) => {
     window.location.href = '#reservation';
   }
 };
+
 
 export const initEventListeners = data => {
   const dateData = data;
@@ -196,7 +266,6 @@ export const initEventListeners = data => {
     reservationPhone,
     menuButton,
     menu,
-    reservationForm,
     footerForm,
   } = domElements;
   const tourElements = [dateSelectTour, peopleSelectTour];
@@ -206,8 +275,6 @@ export const initEventListeners = data => {
     reservationName,
     reservationPhone,
   ];
-
-  window.addEventListener('resize', handleResize);
 
   window.addEventListener('scroll', () => {
     requestAnimationFrame(debouncedCalcFlyPosition);
@@ -268,15 +335,11 @@ export const initEventListeners = data => {
 
   menu.addEventListener('click', handleMenuClick);
 
-  reservationForm.addEventListener('submit', e => {
-    e.preventDefault();
-    submitReservationForm(getConstants().URL);
-  });
+  reservationButton.addEventListener('click', handleReservationButtonClick);
 
-  footerForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    submitFooterForm(getConstants().URL);
-  });
+  document.body.addEventListener('click', handleBodyClick);
+
+  footerForm.addEventListener('submit', handleFooterFormSubmit);
 
   document.body.addEventListener('click', handleModalClicks);
 };

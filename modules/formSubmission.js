@@ -18,6 +18,17 @@ const replaceInputWithMessage = (input, button, inputWrap, messageElement) => {
   button && button.remove();
 };
 
+export const formSubmitStatus = (() => {
+  let error = false;
+
+  return {
+    setError: (value) => {
+      error = value;
+    },
+    getError: () => error,
+  };
+})();
+
 export const submitReservationForm = async url => {
   const {
     reservationForm,
@@ -32,23 +43,20 @@ export const submitReservationForm = async url => {
 
   data.name = reservationName.value;
   data.phone = reservationPhone.value;
+  data.price = reservationPrice.textContent.slice(0, -1);
 
   try {
     const result = await postData(url, data);
-    showModal(getConstants().FORM_MESSAGES[0],
-      getConstants().FORM_MESSAGES[1],
-      true,
-    );
+
     reservationForm.reset();
     reservationData.textContent = '';
     reservationPrice.textContent = '';
+
     console.log(result);
   } catch (error) {
-    showModal(
-      getConstants().FORM_MESSAGES[2],
-      getConstants().FORM_MESSAGES[3],
-      false,
-    );
+    formSubmitStatus.setError(true);
+    showModal();
+
     console.error(error);
   }
 };

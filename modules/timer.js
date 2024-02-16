@@ -1,12 +1,25 @@
-const DAYS_VARS = ['день', 'дня', 'дней'];
-const HOURS_VARS = ['час', 'часа', 'часов'];
-const MINUTES_VARS = ['минута', 'минуты', 'минут'];
-const SECONDS_VARS = ['секунда', 'секунды', 'секунд'];
+const getTimerConstants = () => {
+  const DAYS_VARS = ['день', 'дня', 'дней'];
+  const HOURS_VARS = ['час', 'часа', 'часов'];
+  const MINUTES_VARS = ['минута', 'минуты', 'минут'];
+  const SECONDS_VARS = ['секунда', 'секунды', 'секунд'];
 
-const MS_PER_SECOND = 1000;
-const MS_PER_MINUTE = 1000 * 60;
-const MS_PER_HOUR = MS_PER_MINUTE * 60;
-const MS_PER_DAY = MS_PER_HOUR * 24;
+  const MS_PER_SECOND = 1000;
+  const MS_PER_MINUTE = 1000 * 60;
+  const MS_PER_HOUR = MS_PER_MINUTE * 60;
+  const MS_PER_DAY = MS_PER_HOUR * 24;
+
+  return {
+    DAYS_VARS,
+    HOURS_VARS,
+    MINUTES_VARS,
+    SECONDS_VARS,
+    MS_PER_SECOND,
+    MS_PER_MINUTE,
+    MS_PER_HOUR,
+    MS_PER_DAY,
+  };
+};
 
 const createTimerTitle = (text) => {
   const timerTitle = document.createElement('p');
@@ -54,6 +67,17 @@ const declension = (num, expressions) => {
 };
 
 const updateTimer = (timer, deadline, intervalId) => {
+  const {
+    DAYS_VARS,
+    HOURS_VARS,
+    MINUTES_VARS,
+    SECONDS_VARS,
+    MS_PER_SECOND,
+    MS_PER_MINUTE,
+    MS_PER_HOUR,
+    MS_PER_DAY,
+  } = getTimerConstants();
+
   const now = new Date();
   const remainingTime = deadline - now;
 

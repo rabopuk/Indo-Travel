@@ -1,20 +1,7 @@
-export const CONSTANTS = [
-  'Дата путешествия',
-  'Количество человек',
-  'Выбрать дату',
-];
-
-export const MESSAGES = [
-  'Ваша заявка успешно принята',
-  'Наши менеджеры свяжутся с вами в течение 3-х рабочих дней',
-  'Упс... Что-то пошло не так',
-  'Не удалось отправить заявку. Пожалуйста, повторите отправку ещё раз',
-  'Забронировать',
-];
-
-const PERSON_DECLENSIONS = ['человек', 'человека'];
+import { getConstants } from './constants.js';
 
 export const getPersonDeclension = num => {
+  const { PERSON_DECLENSIONS } = getConstants();
   num = Math.abs(num) % 100;
   const num1 = num % 10;
 

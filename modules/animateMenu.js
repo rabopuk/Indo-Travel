@@ -1,9 +1,5 @@
 import { domElements } from './getDOMElements.js';
 
-export const ANIMATION_DURATION = 500;
-const { menu } = domElements;
-let requestId = NaN;
-
 const easeInOutCubic = timeFraction => (
   timeFraction < 0.5 ?
     4 * timeFraction * timeFraction * timeFraction :
@@ -12,6 +8,7 @@ const easeInOutCubic = timeFraction => (
 
 export const startAnimation = (duration, callback) => {
   let startAnimationTime = NaN;
+  let requestId = NaN;
 
   const step = (timestamp) => {
     startAnimationTime ||= timestamp;
@@ -31,7 +28,9 @@ export const startAnimation = (duration, callback) => {
 };
 
 export const animateMenu = (progress) => {
+  const { menu } = domElements;
   const easing = easeInOutCubic(progress);
+
   menu.style.transform = `translateX(${easing * 100}%)`;
 
   if (progress >= 1) {

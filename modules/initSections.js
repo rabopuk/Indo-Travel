@@ -1,18 +1,22 @@
-import { LOCAL_URL } from './APIUtils.js';
+import { } from './APIUtils.js';
+import { getConstants } from './constants.js';
 import { domElements } from './getDOMElements.js';
-import { createOption, populateData } from './populateDateData.js';
-import { CONSTANTS, getPersonDeclension, updateButtonState } from './utils.js';
+import { createOption } from './populateDateData.js';
+import { getPersonDeclension, updateButtonState } from './utils.js';
 
-export let priceWrapper;
-export let priceDiv;
+let priceWrapper;
+let priceDiv;
 
-const initSection = async (
-  dateSelect, peopleSelect, button, additionalElements = [], updateInfo,
+export const getPriceWrapper = () => priceWrapper;
+export const getPriceDiv = () => priceDiv;
+
+const initSection = (
+  data, dateSelect, peopleSelect, button, additionalElements = [], updateInfo,
 ) => {
-  const dateData = await populateData(LOCAL_URL);
+  const dateData = data;
 
-  dateSelect.append(createOption('', CONSTANTS[0]));
-  peopleSelect.append(createOption('', CONSTANTS[1]));
+  dateSelect.append(createOption('', getConstants().FORM_CONSTANTS[0]));
+  peopleSelect.append(createOption('', getConstants().FORM_CONSTANTS[1]));
 
   dateData.forEach(item => {
     dateSelect.append(createOption(item.date, item.date));
@@ -65,12 +69,13 @@ export const updateReservationInfo = (
     textContent = `${selectedDate} `;
   }
 
-  if (selectedPeople !== '' && selectedPeople !== CONSTANTS[1]) {
+  if (selectedPeople !== '' &&
+    selectedPeople !== getConstants().FORM_CONSTANTS[1]) {
     textContent += `${selectedPeople} ${getPersonDeclension(selectedPeople)}`;
   }
 
   if (selectedItem && selectedPeople !== '' &&
-    selectedPeople !== CONSTANTS[1]) {
+    selectedPeople !== getConstants().FORM_CONSTANTS[1]) {
     priceContent = `${selectedItem.price * selectedPeople}₽`;
   }
 
@@ -78,12 +83,12 @@ export const updateReservationInfo = (
   resPrice.textContent = priceContent;
 };
 
-export const initTourSection = () => {
+export const initTourSection = data => {
   const { dateSelectTour, peopleSelectTour, tourButton } = domElements;
-  initSection(dateSelectTour, peopleSelectTour, tourButton);
+  initSection(data, dateSelectTour, peopleSelectTour, tourButton);
 };
 
-export const initReservationSection = () => {
+export const initReservationSection = data => {
   const {
     dateSelectReservation,
     peopleSelectReservation,
@@ -95,6 +100,7 @@ export const initReservationSection = () => {
   } = domElements;
 
   initSection(
+    data,
     dateSelectReservation,
     peopleSelectReservation,
     reservationButton,

@@ -1,4 +1,6 @@
+import { getData } from './modules/APIUtils.js';
 import './modules/accordion.js';
+import { getConstants } from './modules/constants.js';
 import './modules/fly.js';
 import {
   initReservationSection,
@@ -8,11 +10,13 @@ import './modules/listeners.js';
 import { initEventListeners } from './modules/listeners.js';
 import { initTimer } from './modules/timer.js';
 
-export const init = () => {
-  initTourSection();
-  initReservationSection();
+export const init = async () => {
+  const localData = await getData(getConstants().LOCAL_URL);
 
-  initEventListeners();
+  initTourSection(localData);
+  initReservationSection(localData);
+
+  initEventListeners(localData);
 };
 
 (() => {

@@ -1,32 +1,32 @@
-import { LOCAL_URL, URL } from './APIUtils.js';
-import { heightWrapperTravel } from './accordion.js';
+import { } from './APIUtils.js';
+import { handleAccordion } from './accordion.js';
 import {
-  ANIMATION_DURATION,
   animateMenu,
   startAnimation,
 } from './animateMenu.js';
+import { getConstants } from './constants.js';
 import { debouncedCalcFlyPosition, handleResize } from './fly.js';
 import { submitFooterForm, submitReservationForm } from './formSubmission.js';
 import { domElements } from './getDOMElements.js';
 import {
   createPriceWrapper,
-  priceDiv,
-  priceWrapper,
+  getPriceDiv,
+  getPriceWrapper,
   removePriceWrapper,
   updateReservationInfo,
 } from './initSections.js';
 import {
-  populateData,
   updateCountSelect,
 } from './populateDateData.js';
 import {
-  CONSTANTS,
   getPersonDeclension,
   updateButtonState,
 } from './utils.js';
 
 const handleDocumentLoad100ms = () => {
   const { itemsTravel, textWrappersTravel } = domElements;
+
+  const heightWrapperTravel = handleAccordion();
 
   setTimeout(() => {
     if (itemsTravel.length > 0) {
@@ -42,6 +42,8 @@ const handleAccordionClick = ({ target }) => {
     itemsTravel,
     textWrappersTravel,
   } = domElements;
+
+  const heightWrapperTravel = handleAccordion();
 
   if (target.classList.contains('travel__item-title')) {
     const index = [...accordion.children].indexOf(target.parentNode);
@@ -82,13 +84,14 @@ const handleTourButtonClick = (dateSelect, peopleSelect, dateData) => {
   const selectedItem = dateData.find(item => item.date === selectedDate);
   const selectedPeople = peopleSelect.value;
 
-  if (selectedItem && selectedPeople !== CONSTANTS[1]) {
+  if (selectedItem && selectedPeople !== getConstants().FORM_CONSTANTS[1]) {
     const price = selectedItem.price * selectedPeople;
 
-    if (!priceWrapper) {
+    if (!getPriceWrapper()) {
       createPriceWrapper();
     }
 
+    const priceDiv = getPriceDiv();
     priceDiv.textContent = `Цена за ${selectedPeople} ` +
       `${getPersonDeclension(selectedPeople)}: ${price}`;
   }
@@ -105,7 +108,13 @@ const handleDateSelectChangeReservation = (
 ) => {
   updateCountSelect(dateSelect, peopleSelect, dateData);
   updateButtonState(elements, button);
-  updateReservationInfo(dateSelect, peopleSelect, dateData, reservationData, reservationPrice);
+  updateReservationInfo(
+    dateSelect,
+    peopleSelect,
+    dateData,
+    reservationData,
+    reservationPrice,
+  );
 };
 
 const handlePeopleSelectChangeReservation = (
@@ -118,7 +127,13 @@ const handlePeopleSelectChangeReservation = (
   reservationPrice,
 ) => {
   updateButtonState(elements, button);
-  updateReservationInfo(dateSelect, peopleSelect, dateData, reservationData, reservationPrice);
+  updateReservationInfo(
+    dateSelect,
+    peopleSelect,
+    dateData,
+    reservationData,
+    reservationPrice,
+  );
 };
 
 const handleReservationInputChange = (elements, button) => {
@@ -130,7 +145,7 @@ const handleMenuButtonClick = (e) => {
 
   const { menu } = domElements;
   menu.classList.toggle('header__menu_active');
-  startAnimation(ANIMATION_DURATION, animateMenu);
+  startAnimation(getConstants().ANIMATION_DURATION, animateMenu);
 };
 
 const handleDocumentClick = ({ target }) => {
@@ -165,8 +180,8 @@ const handleModalClicks = ({ target }) => {
   }
 };
 
-export const initEventListeners = async () => {
-  const dateData = await populateData(LOCAL_URL);
+export const initEventListeners = data => {
+  const dateData = data;
   const {
     accordion,
     dateSelectTour,
@@ -255,12 +270,12 @@ export const initEventListeners = async () => {
 
   reservationForm.addEventListener('submit', e => {
     e.preventDefault();
-    submitReservationForm(URL);
+    submitReservationForm(getConstants().URL);
   });
 
   footerForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    submitFooterForm(URL);
+    submitFooterForm(getConstants().URL);
   });
 
   document.body.addEventListener('click', handleModalClicks);

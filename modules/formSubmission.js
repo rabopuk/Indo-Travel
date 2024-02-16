@@ -1,7 +1,7 @@
 import { postData } from './APIUtils.js';
+import { getConstants } from './constants.js';
 import { domElements } from './getDOMElements.js';
 import { showModal } from './modal.js';
-import { MESSAGES } from './utils.js';
 
 const createMessageElement = (input, message) => {
   const messageElement = document.createElement('p');
@@ -35,13 +35,20 @@ export const submitReservationForm = async url => {
 
   try {
     const result = await postData(url, data);
-    showModal(MESSAGES[0], MESSAGES[1], true);
+    showModal(getConstants().FORM_MESSAGES[0],
+      getConstants().FORM_MESSAGES[1],
+      true,
+    );
     reservationForm.reset();
     reservationData.textContent = '';
     reservationPrice.textContent = '';
     console.log(result);
   } catch (error) {
-    showModal(MESSAGES[2], MESSAGES[3], false);
+    showModal(
+      getConstants().FORM_MESSAGES[2],
+      getConstants().FORM_MESSAGES[3],
+      false,
+    );
     console.error(error);
   }
 };
@@ -60,12 +67,16 @@ export const submitFooterForm = async url => {
 
   try {
     const result = await postData(url, data);
-    const successMessage = createMessageElement(footerInput, MESSAGES[1]);
+    const successMessage =
+      createMessageElement(footerInput, getConstants().FORM_MESSAGES[1]);
+
     replaceInputWithMessage(
       footerInput, footerButton, footerInputWrap, successMessage);
     console.log(result);
   } catch (error) {
-    const failMessage = createMessageElement(footerInput, MESSAGES[2]);
+    const failMessage =
+      createMessageElement(footerInput, getConstants().FORM_MESSAGES[2]);
+
     replaceInputWithMessage(
       footerInput, footerButton, footerInputWrap, failMessage);
     console.error(error);

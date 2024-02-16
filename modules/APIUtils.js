@@ -1,8 +1,3 @@
-
-export const URL = 'https://jsonplaceholder.typicode.com/posts';
-// export const URL = 'false address trulyayaaaaaa';
-export const LOCAL_URL = 'date.json';
-
 export const fetchData = async url => {
   try {
     const response = await fetch(url);
@@ -16,6 +11,18 @@ export const fetchData = async url => {
     throw new Error(error.message);
   }
 };
+
+
+export const getData = async (url) => {
+  try {
+    const data = await fetchData(url);
+
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch data: ', error.message);
+  }
+};
+
 
 export const postData = async (url, data) => {
   try {

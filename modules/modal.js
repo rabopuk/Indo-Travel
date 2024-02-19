@@ -1,17 +1,27 @@
 import { getConstants } from './constants.js';
 import { formSubmitStatus } from './formSubmission.js';
 
-const loadStylesheet = async url => new Promise((resolve, reject) => {
-  const link = document.createElement('link');
 
-  link.rel = 'stylesheet';
-  link.href = url;
+const loadStylesheet = async (url) => {
+  if (getConstants().loadedStylesheets.has(url)) {
+    return;
+  }
 
-  link.onload = resolve;
-  link.onerror = reject;
+  return new Promise((resolve, reject) => {
+    const link = document.createElement('link');
 
-  document.head.append(link);
-});
+    link.rel = 'stylesheet';
+    link.href = url;
+
+    link.onload = () => {
+      getConstants().loadedStylesheets.add(url);
+      resolve();
+    };
+    link.onerror = reject;
+
+    document.head.append(link);
+  });
+};
 
 const createModal = data => {
   const overlay = document.createElement('div');

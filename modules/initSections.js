@@ -4,12 +4,6 @@ import { domElements } from './getDOMElements.js';
 import { createOption } from './populateDateData.js';
 import { getPersonDeclension, updateButtonState } from './utils.js';
 
-let priceWrapper;
-let priceDiv;
-
-export const getPriceWrapper = () => priceWrapper;
-export const getPriceDiv = () => priceDiv;
-
 const initSection = (
   data, dateSelect, peopleSelect, button, additionalElements = [], updateInfo,
 ) => {
@@ -32,21 +26,24 @@ const initSection = (
 };
 
 export const removePriceWrapper = () => {
+  let priceWrapper = document.querySelector('.tour__select-wrapper_price');
+
   if (priceWrapper) {
     priceWrapper.remove();
     priceWrapper = null;
-    priceDiv = null;
   }
 };
 
 export const createPriceWrapper = () => {
   const { tourForm, tourButton } = domElements;
 
-  priceWrapper = document.createElement('label');
-  priceWrapper.className = 'tour__select-wrapper';
+  const priceWrapper = document.createElement('label');
+  priceWrapper.classList.add(
+    'tour__select-wrapper', 'tour__select-wrapper_price',
+  );
 
-  priceDiv = document.createElement('div');
-  priceDiv.className = 'tour__select';
+  const priceDiv = document.createElement('div');
+  priceDiv.classList.add('tour__select', 'tour__select_price');
   priceDiv.style.backgroundImage = 'none';
   priceDiv.style.display = 'flex';
   priceDiv.style.alignItems = 'center';

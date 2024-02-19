@@ -14,8 +14,6 @@ import {
 import { domElements } from './getDOMElements.js';
 import {
   createPriceWrapper,
-  getPriceDiv,
-  getPriceWrapper,
   removePriceWrapper,
   updateReservationInfo,
 } from './initSections.js';
@@ -91,12 +89,14 @@ const handleTourButtonClick = (dateSelect, peopleSelect, dateData) => {
 
   if (selectedItem && selectedPeople !== getConstants().FORM_CONSTANTS[1]) {
     const price = selectedItem.price * selectedPeople;
+    const priceWrapper = document.querySelector('.tour__select-wrapper_price');
 
-    if (!getPriceWrapper()) {
+    if (!priceWrapper) {
       createPriceWrapper();
     }
 
-    const priceDiv = getPriceDiv();
+    const priceDiv = document.querySelector('.tour__select_price');
+
     priceDiv.textContent = `Цена за ${selectedPeople} ` +
       `${getPersonDeclension(selectedPeople)}: ${price}`;
   }
@@ -200,7 +200,6 @@ const handleBodyClick = e => {
     e.preventDefault();
     e.stopPropagation();
 
-    const { reservationButton } = domElements;
     const overlay = document.querySelector('.overlay');
 
     overlay.remove();
@@ -211,8 +210,6 @@ const handleBodyClick = e => {
           [...reservationForm.elements].forEach(element => {
             element.disabled = true;
           });
-        } else {
-          reservationButton.disabled = true;
         }
       });
   } else if (target.classList.contains('modal__btn_edit') ||
@@ -225,6 +222,10 @@ const handleBodyClick = e => {
 
     overlay.remove();
     reservationSection.scrollIntoView({ behavior: 'smooth' });
+
+    if (target.classList.contains('modal__btn_err')) {
+      formSubmitStatus.setError(false);
+    }
   }
 };
 

@@ -1,6 +1,8 @@
+const loadedStylesheets = new Set();
+
 export const getConstants = () => {
-  const URL = 'https://jsonplaceholder.typicode.com/posts';
-  // const URL = 'false address trulyayaaaaaa';
+  // const URL = 'https://jsonplaceholder.typicode.com/posts';
+  const URL = 'false address trulyayaaaaaa';
   const LOCAL_URL = 'date.json';
 
   const ANIMATION_DURATION = 500;
@@ -24,6 +26,7 @@ export const getConstants = () => {
   ];
 
   const PERSON_DECLENSIONS = ['человек', 'человека'];
+
   return {
     URL,
     LOCAL_URL,
@@ -34,5 +37,6 @@ export const getConstants = () => {
     FORM_CONSTANTS,
     FORM_MESSAGES,
     PERSON_DECLENSIONS,
+    loadedStylesheets,
   };
 };

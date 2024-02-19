@@ -55,7 +55,7 @@ export const submitReservationForm = async url => {
     console.log(result);
   } catch (error) {
     formSubmitStatus.setError(true);
-    showModal();
+    showModal(data);
 
     console.error(error);
   }

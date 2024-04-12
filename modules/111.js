@@ -172,7 +172,6 @@ const handleMenuClick = ({ target }) => {
 const handleReservationButtonClick = async (e) => {
   e.preventDefault();
   e.stopPropagation();
-
   const {
     reservationPrice,
     reservationName,
